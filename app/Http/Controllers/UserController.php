@@ -7,8 +7,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth as JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use GuzzleHttp\Client;
+
 class UserController extends Controller
 {
+    public function getGuzzleRequest()
+    {
+        $client = new Client();
+        $request = $client->get('https://developers.themoviedb.org/');
+        $response = $request->getBody();
+        dd($response);
+    }
+
+    public function postGuzzleRequest()
+    {
+        $client = new Client();
+        $url = "https://developers.themoviedb.org/";
+
+        $myBody['name'] = "Demo";
+        $request = $client->post($url,  ['body'=>$myBody]);
+        $response = $request->send();
+
+        dd($response);
+    }
+
     public function authenticate(Request $request)
     {
         $credentials = $request->only('email', 'password');
